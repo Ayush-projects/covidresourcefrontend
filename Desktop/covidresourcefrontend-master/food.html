@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Covid-19 Resources</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+		
+		<div class="wrapper d-flex align-items-stretch">
+			<nav id="sidebar">
+				<div class="custom-menu">
+					<button type="button" id="sidebarCollapse" class="btn btn-primary">
+	          <i class="fa fa-bars"></i>
+	          <span class="sr-only">Toggle Menu</span>
+	        </button>
+        </div>
+				<div class="p-4 pt-5">
+		  		<h1><a href="index.html" class="logo">Covid-19 Resources</a></h1>
+          <ul class="list-unstyled components mb-5">
+            <li class="active">
+              <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="oxygen.html">OXYGEN</a>
+            </li>
+            <li>
+            <a href="hospital.html" >HOSPITAL</a>
+
+            </li>
+            <li>
+              <a href="doctor.html" >DOCTORS</a>
+
+          </li>
+            <li>
+            <a href="medicine.html">MEDICINE</a>
+            </li>
+            <li>
+            <a href="ambulance.html">AMBULANCE</a>
+            </li>
+            <li>
+              <a href="plasma.html">PLASMA</a>
+              </li>
+              <li>
+                  <a href="testing.html">Covid Testing</a>
+              </li>
+              <li>
+                  <a href="#">FOOD</a>
+              </li>
+              <li>
+                  <a href="helpline.html" >HELPLINE</a>
+    
+              </li>
+              <li >
+                <div style="height: 10px; background-color: rgba(255, 255, 255, 0.6)"></div>
+                <h6 style = "display: inline; padding-top: 10px;">An initiative from the <b>Jadavpur University COVID 19 Resources Group</b>.<br></h6>
+                <h8>Managed by present students and alumnus of the University.</h8>
+              </li>
+          </ul>
+
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5 pt-5">
+		
+        <div class = "row">
+          <div class = "col-md-6 col-sm-12">
+            <div id="google_translate_element" style = "margin-top: 10px;margin-bottom: 10px;"></div>
+            <h2 class = "mb-04">Food Supply</h2>
+          </div>
+        </div>
+        <div id="accordion" class = "col-md-12 col-sm-12 col-xs-12">
+  
+        </div>
+		</div>
+		
+        
+      </div>
+        </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+      navigator.geolocation.getCurrentPosition(function(position){
+          const apiurl = 'https://server-covid.herokuapp.com/api/food/' + position.coords.latitude + '+' + position.coords.longitude + '/testkey';
+          console.log(apiurl);
+          fetch(apiurl).then(function (response)  {
+              return(response.json());
+            }).then(function (resp) {
+              
+              const container = document.getElementById('accordion');
+
+
+              resp.forEach((result, idx) => {
+              // Create card element
+              const card = document.createElement('div');
+              card.classList = 'card-body';
+
+              if(result.verified == 'true'){
+              // Construct card content
+
+              const content = `
+              <div class="card" style = "border-left: 2px solid #9357b3;margin-top: 10px;margin-bottom: 15px; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                              <div class="card-body">
+                                <div class = "row" style = "margin-bottom : 10px;">
+                                  <div class = "col-md-6 col-sm-6">
+                                    <h5 class="card-title">Source : ${result.name}</h5>
+                                  </div>
+                                  <div class = "col-md-6 col-sm-12 text-center" >
+                                    <button type="button" class="btn btn-success">Verified</button>
+                                  </div>
+                                </div> 
+                                  
+                                  <h6 class="card-subtitle mb-2 text-muted">Location : ${result.location_a}</h6>
+                                  <p class="card-text">Phone Number : ${result.contact}</p>
+                                  <p class="card-text">Details(If Any): ${result.avl_comment}</p>
+                                </div>
+                    </div>`;
+
+              // Append newyly created card element to the container
+              container.innerHTML += content;
+              }else{
+                        // Construct card content
+
+              const content = `
+              <div class="card" style = "border-left: 2px solid #9357b3;margin-top: 10px;margin-bottom: 15px; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                              <div class="card-body">
+                                <div class = "row" style = "margin-bottom : 10px;">
+                                  <div class = "col-md-6 col-sm-6">
+                                    <h5 class="card-title">Source : ${result.name}</h5>
+                                  </div>
+                                  <div class = "col-md-6 col-sm-12 text-center" >
+                                    <button type="button" class="btn btn-secondary">Not Verified</button>
+                                  </div>
+                                </div> 
+                                  
+                                  <h6 class="card-subtitle mb-2 text-muted">Location : ${result.location_a}</h6>
+                                  <p class="card-text">Phone Number : ${result.contact}</p>
+                                  <p class="card-text">Details(If Any): ${result.avl_comment}</p>
+                                </div>
+                    </div>`;
+
+              // Append newyly created card element to the container
+              container.innerHTML += content;
+                  }
+                })
+            });
+
+        }, function(error){
+          if (error.code == error.PERMISSION_DENIED){
+
+            const apiurl = 'https://server-covid.herokuapp.com/api/food/22.4955+88.3709/testkey';
+          console.log(apiurl);
+          fetch(apiurl).then(function (response)  {
+              return(response.json());
+            }).then(function (resp) {
+              
+              const container = document.getElementById('accordion');
+
+
+              resp.forEach((result, idx) => {
+              // Create card element
+              const card = document.createElement('div');
+              card.classList = 'card-body';
+
+              if(result.verified == 'true'){
+              // Construct card content
+
+              const content = `
+              <div class="card" style = "border-left: 2px solid #9357b3;margin-top: 10px;margin-bottom: 15px; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                              <div class="card-body">
+                                <div class = "row" style = "margin-bottom : 10px;">
+                                  <div class = "col-md-6 col-sm-6">
+                                    <h5 class="card-title">Source : ${result.name}</h5>
+                                  </div>
+                                  <div class = "col-md-6 col-sm-12 text-center" >
+                                    <button type="button" class="btn btn-success">Verified</button>
+                                  </div>
+                                </div> 
+                                  
+                                  <h6 class="card-subtitle mb-2 text-muted">Location : ${result.location_a}</h6>
+                                  <p class="card-text">Phone Number : ${result.contact}</p>
+                                  <p class="card-text">Details(If Any): ${result.avl_comment}</p>
+                                </div>
+                    </div>`;
+
+              // Append newyly created card element to the container
+              container.innerHTML += content;
+              }else{
+                        // Construct card content
+
+              const content = `
+              <div class="card" style = "border-left: 2px solid #9357b3;margin-top: 10px;margin-bottom: 15px; box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);">
+                              <div class="card-body">
+                                <div class = "row" style = "margin-bottom : 10px;">
+                                  <div class = "col-md-6 col-sm-6">
+                                    <h5 class="card-title">Source : ${result.name}</h5>
+                                  </div>
+                                  <div class = "col-md-6 col-sm-12 text-center" >
+                                    <button type="button" class="btn btn-secondary">Not Verified</button>
+                                  </div>
+                                </div> 
+                                  
+                                  <h6 class="card-subtitle mb-2 text-muted">Location : ${result.location_a}</h6>
+                                  <p class="card-text">Phone Number : ${result.contact}</p>
+                                  <p class="card-text">Details(If Any): ${result.avl_comment}</p>
+                                </div>
+                    </div>`;
+
+              // Append newyly created card element to the container
+              container.innerHTML += content;
+                  }
+      })
+            });
+            
+          }
+             
+        });
+    </script>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en', includedLanguages: 'bn,hi,en',layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false
+        }, 'google_translate_element');
+      }
+      
+      </script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  </body>
+</html>
